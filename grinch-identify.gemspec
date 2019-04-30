@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = "grinch-identify"
-  s.version = "1.7.0"
+  s.version = "1.7.1"
   s.summary = "A plugin allowing Grinch bots to automatically identify with services."
   s.description = <<~DESC
     A plugin allowing Grinch bots to automatically identify with services.
