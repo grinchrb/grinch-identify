@@ -1,13 +1,18 @@
+# frozen_string_literal: true
+
 Gem::Specification.new do |s|
-  s.name = 'cinch-identify'
-  s.version = '1.7.0'
-  s.summary = 'A plugin allowing Cinch bots to automatically identify with services.'
-  s.description = 'A plugin allowing Cinch bots to automatically identify with services. Supported are NickServ, QuakeNet and KreyNet.'
-  s.authors = ['Dominik Honnef']
-  s.email = ['dominikh@fork-bomb.org']
-  s.homepage = 'http://rubydoc.info/github/cinchrb/cinch-identify'
-  s.required_ruby_version = '>= 1.9.1'
-  s.files = Dir['LICENSE', 'README.md', '{lib,examples}/**/*']
-  s.add_dependency("cinch", "~> 2.0")
+  s.name = "grinch-identify"
+  s.version = "1.7.0"
+  s.summary = "A plugin allowing Grinch bots to automatically identify with services."
+  s.description = <<~DESC
+    A plugin allowing Grinch bots to automatically identify with services.
+    NickServ, QuakeNet and KreyNet are supported.
+  DESC
+  s.authors = ["William Woodruff"]
+  s.email = ["william@yossarian.net"]
+  s.homepage = "http://rubydoc.info/github/cinchrb/cinch-identify"
+  s.required_ruby_version = ">= 2.4"
+  s.files = Dir["LICENSE", "README.md", "{lib,examples}/**/*"]
+  s.add_dependency "grinch", ">= 1.0.1"
   s.license = "MIT"
 end

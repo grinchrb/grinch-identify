@@ -1,6 +1,6 @@
 # Identify plugin
 
-This plugin allows Cinch to automatically identify with services.
+This plugin allows Grinch to automatically identify with services.
 Currently, DALnet, QuakeNet, KreyNet and all networks using NickServ are
 supported.
 
