@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# frozen_string_literal: true
+
 require "openssl"
 
 module Cinch
@@ -7,7 +8,7 @@ module Cinch
       include Cinch::Plugin
 
       listen_to :connect, method: :identify
-      def identify(m)
+      def identify(_m)
         case config[:type]
         when :quakenet
           debug "Identifying with Q"
@@ -34,8 +35,8 @@ module Cinch
 
       match(/^You are successfully identified as/,           use_prefix: false, use_suffix: false, react_on: :private, method: :identified_nickserv)
       match(/^You are now identified for/,                   use_prefix: false, use_suffix: false, react_on: :private, method: :identified_nickserv)
-      match(/^Password accepted - you are now recognized\./, use_prefix: false, use_suffix: false, react_on: :private, method: :identified_nickserv)
-      match(/^Hasło przyjęte - jesteś zidentyfikowany/,      use_prefix: false, use_suffix: false, react_on: :private, method: :identified_nickserv)
+      match(/^Password accepted -+ you are now recognized\./, use_prefix: false, use_suffix: false, react_on: :private, method: :identified_nickserv)
+      match(/^Hasło przyjęte -+ jesteś zidentyfikowany/,      use_prefix: false, use_suffix: false, react_on: :private, method: :identified_nickserv)
       def identified_nickserv(m)
         service_name = config[:service_name] || "nickserv"
         if m.user == User(service_name) && config[:type] == :nickserv
@@ -47,14 +48,14 @@ module Cinch
       match(/^CHALLENGE (.+?) (.+)$/, use_prefix: false, use_suffix: false, react_on: :notice, method: :challengeauth)
       def challengeauth(m)
         return unless m.user && m.user.nick == "Q"
-        return unless [:secure_quakenet, :challengeauth].include?(config[:type])
+        return unless %i[secure_quakenet challengeauth].include?(config[:type])
 
         if match = m.message.match(/^CHALLENGE (.+?) (.+)$/)
           challenge = match[1]
           @bot.debug "Received challenge '#{challenge}'"
 
           username = config[:username].irc_downcase(:rfc1459)
-          password = config[:password][0,10]
+          password = config[:password][0, 10]
 
           key = OpenSSL::Digest::SHA256.hexdigest(username + ":" + OpenSSL::Digest::SHA256.hexdigest(password))
           response = OpenSSL::HMAC.hexdigest("SHA256", key, challenge)
@@ -64,7 +65,7 @@ module Cinch
 
       match(/^You are now logged in as/, use_prefix: false, use_suffix: false, react_on: :notice, method: :identified_quakenet)
       def identified_quakenet(m)
-        if m.user == User("q") && [:quakenet, :secure_quakenet, :challengeauth].include?(config[:type])
+        if m.user == User("q") && %i[quakenet secure_quakenet challengeauth].include?(config[:type])
           debug "Identified with Q"
           @bot.handlers.dispatch(:identified, m)
         end
@@ -81,6 +82,7 @@ module Cinch
       end
 
       private
+
       def identify_dalnet
         User("Nickserv@services.dal.net").send("identify %s" % [config[:password]])
       end
@@ -96,11 +98,11 @@ module Cinch
       def identify_nickserv
         service_name = config[:service_name] || "nickserv"
         service_name = service_name.split("@").first
-        if config[:username]
-          cmd = "identify %s %s" % [config[:username], config[:password]]
-        else
-          cmd = "identify %s" % [config[:password]]
-        end
+        cmd = if config[:username]
+                "identify %s %s" % [config[:username], config[:password]]
+              else
+                "identify %s" % [config[:password]]
+              end
         User(service_name).send(cmd)
       end
 
