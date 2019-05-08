@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   DESC
   s.authors = ["William Woodruff"]
   s.email = ["william@yossarian.net"]
-  s.homepage = "http://rubydoc.info/github/cinchrb/cinch-identify"
+  s.homepage = "https://github.com/grinchrb/grinch-identify"
   s.required_ruby_version = ">= 2.4"
   s.files = Dir["LICENSE", "README.md", "{lib,examples}/**/*"]
   s.add_dependency "grinch", ">= 1.0.1"
